@@ -93,3 +93,6 @@ ENV/
 .idea
 *-ubyte.gz
 .DS_Store
+
+non-vehicles.zip
+vehicles.zip

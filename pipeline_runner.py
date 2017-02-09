@@ -5,13 +5,13 @@ import os
 import matplotlib.image as mpimg
 import matplotlib.pyplot as plt
 
-from pipeline_ops.lane_detection import CameraCalibrationOp, LaneDetectionOp
+from lib.lane_detection import CameraCalibrationOp, LaneDetectionOp
 
 # Import everything needed to edit/save/watch video clips
 from moviepy.editor import VideoFileClip
 
-from pipeline_ops.pipeline_ops import PlotImageOp
-from pipeline_ops.vehicle_detection import VehicleDetectionOp
+from lib.pipeline_ops import PlotImageOp
+from lib.vehicle_detection import VehicleDetectionOp
 
 
 class PipelineRunner:

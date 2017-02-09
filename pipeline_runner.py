@@ -59,15 +59,16 @@ if __name__ == '__main__':
 	).perform()
 
 	# See how well my pipeline performs against all .jpg images inside test_images directory
-	if True:
+	if False:
 		images = glob.glob('test_images/*.jpg')
 		for img_path in images:
 			result = PipelineRunner(
 				calibration_op,
 				color_space='HSV',
-				color_channel=2
+				color_channel=2,
+				processed_images_save_dir=os.path.basename(img_path).split('.')[0]
 			).process_image(mpimg.imread(img_path))
-			PlotImageOp(result, title="{} - FINAL".format(img_path)).perform()
+			# PlotImageOp(result, title="{} - FINAL".format(img_path)).perform()
 
 	# Run pipeline against the main project_video.mp4
 	if False:
@@ -75,7 +76,7 @@ if __name__ == '__main__':
 			calibration_op,
 			color_space='HSV',
 			color_channel=2,
-			processed_images_save_dir='project_video_final'
+			processed_images_save_dir='project_video'
 		).process_video('project_video.mp4', 'project_video_final.mp4')
 
 	# Run pipeline against the challenge_video.mp4
@@ -84,5 +85,14 @@ if __name__ == '__main__':
 			calibration_op,
 			color_space='HSV',
 			color_channel=2,
-			processed_images_save_dir='challenge_video_final'
+			processed_images_save_dir='challenge_video'
 		).process_video('challenge_video.mp4', 'challenge_video_final.mp4')
+
+	# Run pipeline against the test_video.mp4
+	if True:
+		PipelineRunner(
+			calibration_op,
+			color_space='HSV',
+			color_channel=2,
+			processed_images_save_dir='test_video'
+		).process_video('test_video.mp4', 'test_video_final.mp4')

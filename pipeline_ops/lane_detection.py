@@ -429,7 +429,10 @@ class LaneDetectionOp(PipelineOp):
 	def __save_image(self, img, name):
 		self.__save_counter += 1
 		if self.__processed_images_save_dir != None:
-			cv2.imwrite('processed_images/{}{}_{}_{}.jpg'.format(self.__processed_images_save_dir, self.__name,
+			basedir = 'processed_images/{}'.format(self.__processed_images_save_dir)
+			if not os.path.exists(basedir):
+				os.makedirs(basedir)
+			cv2.imwrite(basedir+'/{}_{}_{}.jpg'.format(self.__processed_images_save_dir, self.__name,
 			                                                     self.__save_counter, name), img)
 
 	def process_image(self, img, name):
@@ -446,6 +449,8 @@ class LaneDetectionOp(PipelineOp):
 		sobely_thresh = self.__sobely_thresh
 		mag_grad_thresh = self.__mag_grad_thresh
 		dir_grad_thresh = self.__dir_grad_thresh
+
+		self.__save_image(cv2.cvtColor(img, cv2.COLOR_RGB2BGR), 'raw_input')
 
 		# undistort the raw image
 		undistorted = UndistortOp(img, self.__calibration_op).perform().output()
@@ -595,8 +600,7 @@ class LaneDetectionOp(PipelineOp):
 
 		# Find center of car relitive to center of lane
 		# determine center of the lane.
-		left_line_baseX = left_fit[
-			2]  # Lesson 12 - distance from the bottom(y=720) left(x=0) of the image to the left lane line in pixels.
+		left_line_baseX = left_fit[2]  # Lesson 12 - distance from the bottom(y=720) left(x=0) of the image to the left lane line in pixels.
 		left_line_baseMeters = left_line_baseX * xm_per_pix
 		right_line_baseX = right_fit[2]  # same for the right lane line.
 		right_line_baseMeters = right_line_baseX * xm_per_pix
@@ -614,10 +618,8 @@ class LaneDetectionOp(PipelineOp):
 		left_fit_cr = np.polyfit(lefty * ym_per_pix, leftx * xm_per_pix, 2)
 		right_fit_cr = np.polyfit(righty * ym_per_pix, rightx * xm_per_pix, 2)
 
-		left_curverad = ((1 + (2 * left_fit_cr[0] * y_eval + left_fit_cr[1]) ** 2) ** 1.5) \
-		                / np.absolute(2 * left_fit_cr[0])
-		right_curverad = ((1 + (2 * right_fit_cr[0] * y_eval + right_fit_cr[1]) ** 2) ** 1.5) \
-		                 / np.absolute(2 * right_fit_cr[0])
+		left_curverad = ((1 + (2 * left_fit_cr[0] * y_eval + left_fit_cr[1]) ** 2) ** 1.5) / np.absolute(2 * left_fit_cr[0])
+		right_curverad = ((1 + (2 * right_fit_cr[0] * y_eval + right_fit_cr[1]) ** 2) ** 1.5) / np.absolute(2 * right_fit_cr[0])
 		# Now our radius of curvature is in meters
 		# print('left curve rad: {}m    |     right curve rad: {}m'.format(left_curverad, right_curverad))
 

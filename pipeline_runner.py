@@ -1,0 +1,88 @@
+import numpy as np
+import cv2
+import glob
+import os
+import matplotlib.image as mpimg
+import matplotlib.pyplot as plt
+
+from pipeline_ops.lane_detection import CameraCalibrationOp, LaneDetectionOp
+
+# Import everything needed to edit/save/watch video clips
+from moviepy.editor import VideoFileClip
+
+from pipeline_ops.pipeline_ops import PlotImageOp
+from pipeline_ops.vehicle_detection import VehicleDetectionOp
+
+
+class PipelineRunner:
+	def __init__(self, calibration_op, color_space='HSV', color_channel=2, processed_images_save_dir=None):
+		self.current_frame = 0
+		self.lane_assist_op = LaneDetectionOp(
+			calibration_op,
+			margin=100,
+			kernel_size=15,
+			sobelx_thresh=(20, 100),
+			sobely_thresh=(20, 100),
+			mag_grad_thresh=(20, 250),
+			dir_grad_thresh=(0.3, 1.3),
+			color_space=color_space,
+			color_channel=color_channel,
+			processed_images_save_dir=processed_images_save_dir
+		)
+
+		# TODO Implement VehicleDetectionOp
+		self.vehicle_detection_op = VehicleDetectionOp(
+			calibration_op
+		)
+
+	def process_video(self, src_video_path, dst_video_path, audio=False):
+		self.current_frame = 0
+		VideoFileClip(src_video_path).fl_image(self.process_image).write_videofile(dst_video_path, audio=audio)
+
+	def process_image(self, image):
+		self.current_frame += 1
+		return self.lane_assist_op.process_image(
+			image,
+			self.current_frame
+		).output()
+
+
+if __name__ == '__main__':
+	# I'm calibrating my camera outside of the PipelineRunner because if I decided to record my own video using my
+	# camera, I'd need to calibrate it using checkerboard images taken with my camera. This just saves me from having
+	# to refactor the code later (because it's easy to do it right the first time).
+	calibration_images = glob.glob('camera_cal/calibration*.jpg')
+	calibration_op = CameraCalibrationOp(
+		calibration_images=calibration_images,
+		x_inside_corners=9,
+		y_inside_corners=6
+	).perform()
+
+	# See how well my pipeline performs against all .jpg images inside test_images directory
+	if True:
+		images = glob.glob('test_images/*.jpg')
+		for img_path in images:
+			result = PipelineRunner(
+				calibration_op,
+				color_space='HSV',
+				color_channel=2
+			).process_image(mpimg.imread(img_path))
+			PlotImageOp(result, title="{} - FINAL".format(img_path)).perform()
+
+	# Run pipeline against the main project_video.mp4
+	if False:
+		PipelineRunner(
+			calibration_op,
+			color_space='HSV',
+			color_channel=2,
+			processed_images_save_dir='project_video_final'
+		).process_video('project_video.mp4', 'project_video_final.mp4')
+
+	# Run pipeline against the challenge_video.mp4
+	if False:
+		PipelineRunner(
+			calibration_op,
+			color_space='HSV',
+			color_channel=2,
+			processed_images_save_dir='challenge_video_final'
+		).process_video('challenge_video.mp4', 'challenge_video_final.mp4')

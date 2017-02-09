@@ -31,7 +31,7 @@ class CarsNotCarsDatasetOp(PipelineOp):
 
 	def __load_dataset(self):
 		cars = self.__cars
-		not_cars = self.__notcars
+		not_cars = self.__not_cars
 
 		if len(cars) <= 0:
 			# Read in cars and not_cars
@@ -44,7 +44,7 @@ class CarsNotCarsDatasetOp(PipelineOp):
 				else:
 					cars.append(image)
 			self.__cars = cars
-			self.__notcars = not_cars
+			self.__not_cars = not_cars
 
 		return cars, not_cars
 

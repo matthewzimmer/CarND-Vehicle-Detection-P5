@@ -89,7 +89,7 @@ if __name__ == '__main__':
 		).process_video('challenge_video.mp4', 'challenge_video_final.mp4')
 
 	# Run pipeline against the test_video.mp4
-	if True:
+	if False:
 		PipelineRunner(
 			calibration_op,
 			color_space='HSV',

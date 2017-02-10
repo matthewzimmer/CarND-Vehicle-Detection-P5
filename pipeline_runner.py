@@ -15,20 +15,9 @@ from lib.vehicle_detection_ops import VehicleDetectionOp
 
 
 class PipelineRunner:
-	def __init__(self, calibration_op, color_space='HSV', color_channel=2, processed_images_save_dir=None):
+	def __init__(self, lane_assist_op, vehicle_detection_op):
 		self.current_frame = 0
-		self.lane_assist_op = LaneDetectionOp(
-			calibration_op,
-			margin=100,
-			kernel_size=15,
-			sobelx_thresh=(20, 100),
-			sobely_thresh=(20, 100),
-			mag_grad_thresh=(20, 250),
-			dir_grad_thresh=(0.3, 1.3),
-			color_space=color_space,
-			color_channel=color_channel,
-			processed_images_save_dir=processed_images_save_dir
-		)
+		self.__lane_assist_op = lane_assist_op
 
 		# TODO Implement VehicleDetectionOp
 		self.vehicle_detection_op = VehicleDetectionOp(
@@ -41,7 +30,7 @@ class PipelineRunner:
 
 	def process_image(self, image):
 		self.current_frame += 1
-		return self.lane_assist_op.process_image(
+		return self.__lane_assist_op.process_image(
 			image,
 			self.current_frame
 		).output()
@@ -58,15 +47,30 @@ if __name__ == '__main__':
 		y_inside_corners=6
 	).perform()
 
+	lane_assist_op = LaneDetectionOp(
+		calibration_op,
+		margin=100,
+		kernel_size=15,
+		sobelx_thresh=(20, 100),
+		sobely_thresh=(20, 100),
+		mag_grad_thresh=(20, 250),
+		dir_grad_thresh=(0.3, 1.3),
+		color_space='HSV',
+		color_channel=2,
+		processed_images_save_dir=os.path.basename(img_path).split('.')[0]
+	)
+	# vehicle detection manager
+	vehicle_detection_op = VehicleDetectionOp(
+		calibration_op
+	)
+
 	# See how well my pipeline performs against all .jpg images inside test_images directory
-	if False:
+	if True:
 		images = glob.glob('test_images/*.jpg')
 		for img_path in images:
 			result = PipelineRunner(
 				calibration_op,
-				color_space='HSV',
-				color_channel=2,
-				processed_images_save_dir=os.path.basename(img_path).split('.')[0]
+				lane_assist_op,
 			).process_image(mpimg.imread(img_path))
 			# PlotImageOp(result, title="{} - FINAL".format(img_path)).perform()
 

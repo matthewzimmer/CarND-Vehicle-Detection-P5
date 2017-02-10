@@ -32,6 +32,8 @@ class PipelineOp:
 		raise NotImplementedError
 
 	def output(self):
+		if self.__output == None:
+			self.perform()
 		return self.__output
 
 	def _apply_output(self, value):

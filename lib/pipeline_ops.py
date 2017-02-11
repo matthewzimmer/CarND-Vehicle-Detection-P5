@@ -198,7 +198,7 @@ class WarperOp(PipelineOp):
 
 
 class PlotImageOp(PipelineOp):
-	def __init__(self, img, title='', cmap='gray', interpolation='none', aspect='auto'):
+	def __init__(self, img, title='', cmap=None, interpolation='none', aspect='auto'):
 		PipelineOp.__init__(self)
 		self.__img = np.copy(img)
 		self.__title = title

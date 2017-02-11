@@ -93,6 +93,8 @@ ENV/
 *-ubyte.gz
 .DS_Store
 
+data/non-vehicles
 non-vehicles.zip
+data/vehicles
 vehicles.zip
 processed_images

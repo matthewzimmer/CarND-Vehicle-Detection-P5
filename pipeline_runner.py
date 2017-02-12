@@ -11,7 +11,7 @@ from lib.lane_detection_ops import CameraCalibrationOp, LaneDetectionOp
 from moviepy.editor import VideoFileClip
 
 from lib.pipeline_ops import PlotImageOp
-from lib.vehicle_detection_ops import VehicleDetectionOp
+
 
 
 class PipelineRunner:
@@ -20,9 +20,9 @@ class PipelineRunner:
 		self.__lane_assist_op = lane_assist_op
 
 		# TODO Implement VehicleDetectionOp
-		self.vehicle_detection_op = VehicleDetectionOp(
-			calibration_op
-		)
+		# self.vehicle_detection_op = VehicleDetectionOp(
+		# 	calibration_op
+		# )
 
 	def process_video(self, src_video_path, dst_video_path, audio=False):
 		self.current_frame = 0
@@ -60,9 +60,9 @@ if __name__ == '__main__':
 		processed_images_save_dir=os.path.basename(img_path).split('.')[0]
 	)
 	# vehicle detection manager
-	vehicle_detection_op = VehicleDetectionOp(
-		calibration_op
-	)
+	# vehicle_detection_op = VehicleDetectionOp(
+	# 	calibration_op
+	# )
 
 	# See how well my pipeline performs against all .jpg images inside test_images directory
 	if True:

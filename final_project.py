@@ -307,9 +307,7 @@ class Params():
 			hist_bins=64,
 			spatial_feat=True,
 			hist_feat=True,
-			hog_feat=True,
-			y_start_stop=[None, None],
-			x_start_stop=[None, None]
+			hog_feat=True
 	):
 		self.colorspace = colorspace  # Can be RGB, HSV, LUV, HLS, YUV, YCrCb
 		self.orient = orient  # typically between 6 and 12
@@ -321,8 +319,6 @@ class Params():
 		self.spatial_feat = spatial_feat  # Spatial features on or off
 		self.hist_feat = hist_feat  # Histogram features on or off
 		self.hog_feat = hog_feat  # HOG features on or off
-		self.y_start_stop = y_start_stop  # Min and max in y to search in slide_window()
-		self.x_start_stop = x_start_stop  # Min and max in x to search in slide_window()
 
 
 def calibrate_camera():
@@ -561,9 +557,7 @@ if __name__ == '__main__':
 		hist_bins=32,
 		spatial_feat=True,
 		hist_feat=True,
-		hog_feat=True,
-		y_start_stop=[375, 695],
-		x_start_stop=[256, 1152]
+		hog_feat=True
 	)  # 99.21%
 
 	svc, X_scaler = train_classifier(params, test_cars, test_notcars, C=0.001)

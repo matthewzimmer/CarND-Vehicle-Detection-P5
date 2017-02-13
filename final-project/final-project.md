@@ -1139,19 +1139,19 @@ The ultimate step I took to optimize the performane of the classifier was to bui
 
 Here are some example images:
 
-![400_IN_FINAL.jpg](output_images/project_video/400_IN_FINAL.jpg)
+![400_IN_FINAL.jpg](../output_images/project_video/400_IN_FINAL.jpg)
 
-![600_IN_FINAL.jpg](output_images/project_video/600_IN_FINAL.jpg)
+![600_IN_FINAL.jpg](../output_images/project_video/600_IN_FINAL.jpg)
 
-![800_IN_FINAL.jpg](output_images/project_video/800_IN_FINAL.jpg)
+![800_IN_FINAL.jpg](../output_images/project_video/800_IN_FINAL.jpg)
 
-![900_IN_FINAL.jpg](output_images/project_video/900_IN_FINAL.jpg)
+![900_IN_FINAL.jpg](../output_images/project_video/900_IN_FINAL.jpg)
 
-![1100_IN_FINAL.jpg](output_images/project_video/1100_IN_FINAL.jpg)
+![1100_IN_FINAL.jpg](../output_images/project_video/1100_IN_FINAL.jpg)
 
-![1200_IN_FINAL.jpg](output_images/project_video/1200_IN_FINAL.jpg)
+![1200_IN_FINAL.jpg](../output_images/project_video/1200_IN_FINAL.jpg)
 
-![1260_IN_FINAL.jpg](output_images/project_video/1260_IN_FINAL.jpg)
+![1260_IN_FINAL.jpg](../output_images/project_video/1260_IN_FINAL.jpg)
 
 ---
 
@@ -9055,7 +9055,7 @@ Here's an example result showing the heatmap from a series of frames of video, t
 
 
 ```python
-images = glob.glob('output_images/project_video/*_IN.jpg')
+images = glob.glob('../output_images/project_video/*_IN.jpg')
 vehicle_detection_op.vis_detections = False
 vehicle_detection_op.vis_labels = False
 vehicle_detection_op.vis_heat = True
@@ -9179,7 +9179,7 @@ for img_path in images:
 
 
 ```python
-images = glob.glob('output_images/project_video/*_IN.jpg')
+images = glob.glob('../output_images/project_video/*_IN.jpg')
 vehicle_detection_op.vis_detections = False
 vehicle_detection_op.vis_labels = True
 vehicle_detection_op.vis_heat = False
@@ -9303,13 +9303,13 @@ for img_path in images:
 
 
 ```python
-images = glob.glob('output_images/project_video/*_IN.jpg')
+images = glob.glob('../output_images/project_video/*_IN.jpg')
 vehicle_detection_op.vis_detections = False
 vehicle_detection_op.vis_labels = False
 vehicle_detection_op.vis_heat = False
 for img_path in images:
     result = pipeline.process_image(mpimg.imread(img_path))
-    cv2.imwrite('output_images/project_video/{}_FINAL.jpg'.format(os.path.basename(img_path).split('.')[0]), cv2.cvtColor(result, cv2.COLOR_RGB2BGR))
+    cv2.imwrite('../output_images/project_video/{}_FINAL.jpg'.format(os.path.basename(img_path).split('.')[0]), cv2.cvtColor(result, cv2.COLOR_RGB2BGR))
     PlotImageOp(result*255, title="{} - FINAL".format(img_path), cmap=None).perform()
 ```
 

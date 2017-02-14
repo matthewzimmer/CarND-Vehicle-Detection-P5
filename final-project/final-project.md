@@ -1508,6 +1508,76 @@ result = draw_labeled_bboxes(np.copy(image*255), labels)
 
 Here's an example result showing the heatmap from a series of frames of video, the result of `scipy.ndimage.measurements.label()` and the bounding boxes then overlaid on the last frame of video:
 
+### Here are seven frames and their corresponding detected windows:
+
+
+```python
+images = glob.glob('output_images/project_video/*_IN.jpg')
+vehicle_detection_op.vis_detections = True
+vehicle_detection_op.vis_labels = False
+vehicle_detection_op.vis_heat = False
+for img_path in images:
+    result = pipeline.process_image(mpimg.imread(img_path))
+```
+
+    3.08 Seconds to search and locate 74 windows...
+
+
+
+![png](output_38_1a.png)
+
+
+    2 cars found
+    3.05 Seconds to search and locate 33 windows...
+
+
+
+![png](output_38_3a.png)
+
+
+    1 cars found
+    3.05 Seconds to search and locate 95 windows...
+
+
+
+![png](output_38_5a.png)
+
+
+    2 cars found
+    3.05 Seconds to search and locate 51 windows...
+
+
+
+![png](output_38_7a.png)
+
+
+    1 cars found
+    3.02 Seconds to search and locate 32 windows...
+
+
+
+![png](output_38_9a.png)
+
+
+    1 cars found
+    3.09 Seconds to search and locate 88 windows...
+
+
+
+![png](output_38_11a.png)
+
+
+    1 cars found
+    3.05 Seconds to search and locate 126 windows...
+
+
+
+![png](output_38_13a.png)
+
+
+    1 cars found
+
+
 ### Here are seven frames and their corresponding heatmaps:
 
 
